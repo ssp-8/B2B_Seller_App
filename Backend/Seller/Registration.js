@@ -14,10 +14,10 @@ RegistrationRoute.post('/', (req,res)=>{
 
     let user = req.body;
 
-    let registrationquery = `insert into "T2_Registered" ("SellerID", "PanCard_ID", "Aadhar", "Company_Name", "Bank_Account_Number" , "GST_IN","Company_Address","Country","Company_Description") 
+    let registrationquery = `insert into "Seller"."T2_Registered" ("SellerID", "PanCard_ID", "Aadhar", "Company_Name", "Bank_Account_Number" , "GST_IN","Company_Address","Country","Company_Description") 
     values ('${user.sellerID}' , '${user.pancard}', '${user.aadhar}', '${user.company_name}', '${user.bank_account_number}', '${user.GST}' , '${user.company_address}','${user.country} , '${user.company_description}')`;
 
-    let bankquery = `insert into "T3_BankDetails" ("SellerID","Bank_Account_Number","Bank_Name","Bank_Branch","IFSC_Code")
+    let bankquery = `insert into "Seller"."T3_BankDetails" ("SellerID","Bank_Account_Number","Bank_Name","Bank_Branch","IFSC_Code")
     values ('${user.sellerID}','${user.bank_account_number}','${user.bank_name}','${user.bank_branch}','${user.IFSC_Code}')`;
 
     // First creating the Registration account

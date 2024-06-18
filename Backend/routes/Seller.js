@@ -1,24 +1,41 @@
 const express = require("express")
 
 
-const UserRoute = express.Router()
+const SellerRoute = express.Router()
 const SignUpRoute = require("../Seller/SignUp")
 const LoginRoute = require("../Seller/Login")
 const RegistrationRoute = require('../Seller/Registration')
 const OrdersRoute = require('../Seller/Orders')
+const verifyJWT = require("../middleware/authentication")
+const ProductRoute = require("../Seller/Product")
 
 // Different Routes being used for different paths
 
+/* 
+Product Table needs to be created
+// Create Product
+// Get Product
+// Update Product
+// Delete Product
+
+*/
+
+
 // Sign Up Route
-UserRoute.use('/signup',SignUpRoute);
+SellerRoute.use('/signup',SignUpRoute);
 
 // Login Route
-UserRoute.use('/login',LoginRoute);
+SellerRoute.use('/login',LoginRoute);
 
 // Registration Route
-UserRoute.use('/registration',RegistrationRoute);
+SellerRoute.use('/registration',RegistrationRoute);
+
+SellerRoute.use(verifyJWT);
 
 // Orders Route
-UserRoute.use('/myorders',OrdersRoute)
+SellerRoute.use('/myorders',OrdersRoute)
 
-module.exports = UserRoute
+//Product Route
+SellerRoute.use('/myproducts',ProductRoute)
+
+module.exports = SellerRoute

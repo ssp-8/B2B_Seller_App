@@ -1,6 +1,7 @@
 // Database connection established and ready to listen
 const client = require('../database/User_Tables')
 const { sha512, sha384, sha512_256, sha512_224 } = require('js-sha512');
+const {v4 : uuidv4} = require('uuid')
 
 
 const bodyparser = require('body-parser');
@@ -22,9 +23,11 @@ SignUpRoute.post('/', (req, res)=>{
     // Encrypting the password
     let password = sha512(user.password)
 
+    // Seller ID is the UUID
 
+    
     // The insert query being written here
-    let insertQuery = `insert into "T1_SignedUp"("SellerID", "Seller_Referral_Code", "Mail_ID" ,"Phone", "Password","Seller_Name") 
+    let insertQuery = `insert into "Seller"."T1_SignedUp"("SellerID", "Seller_Referral_Code", "Mail_ID" ,"Phone", "Password","Seller_Name") 
     values('${user.name}' ,'${user.referral_code}' ,'${user.mailid}' , '${user.phone}', '${password}','${user.seller_name}')`
 
     // query written here
