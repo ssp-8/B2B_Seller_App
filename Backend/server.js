@@ -2,10 +2,12 @@ const express = require("express");
 const app = express()
 
 
-const SellerRoute = require('./routes/seller')
+const SellerRoute = require('./routes/seller');
 
 app.listen(3000,()=>{
-    console.log("Started to listen")
+    console.log("Listening at post 3000")
 });
+
+app.use(express.urlencoded({extended:false}))
 
 app.use('/seller',SellerRoute);

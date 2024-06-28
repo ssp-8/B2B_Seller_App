@@ -9,6 +9,6 @@ const client = new Client({
 })
 client.connect()
 
-console.log("Server Connection Established ",new Date().getTime())
+console.log("Database Connected ", Date.now())
 
 module.exports = client

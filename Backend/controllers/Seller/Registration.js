@@ -1,10 +1,9 @@
 const express = require('express')
 
-const client = require('../database/User_Tables');
+const client = require('../../connection')
 
 const RegistrationRoute = express.Router()
-const bodyparser = require('body-parser')
-RegistrationRoute.use(bodyparser.json())
+
 
 
 

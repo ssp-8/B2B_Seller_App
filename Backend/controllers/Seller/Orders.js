@@ -1,10 +1,6 @@
 const express = require('express')
 const OrdersRoute = express.Router()
-const client = require('../database/User_Tables')
-
-const bodyparser = require('body-parser')
-
-OrdersRoute.use(bodyparser.json())
+const client = require('../../connection')
 
 OrdersRoute.get('/',(req,res)=>{
 
