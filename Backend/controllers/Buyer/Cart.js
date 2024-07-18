@@ -7,22 +7,18 @@ const route = express.Router()
 
 // Can CartID be stored in the cache, so that an extra query can be stopped here ?
 
-
 route.post('/:BuyerID',(req, res)=>{
     let buyerID = req.params.BuyerID
 
-    let select = `Select "CartID" from "Buyer"."T1_SignedUp" where "BuyerID" = '${buyerID}'`
 
-    // query 01
-    client.query(select, (err, result_1) => {
-        if(err) res.status(404).json({"err": "Buyer Not Found"})
-        
-        let CartID = result_1.rows[0]["CartID"]
-
-        let selectQuery = `Select "Products" from "Buyer"."T2_Cart" where "CartID" = '${CartID}'`
+        let selectQuery = `Select "Products" from "Buyer"."T2_Cart" where "BuyerID" = '${buyerID}'`
 
         // query 02
         client.query(selectQuery, (error, result_2)=> {
+
+            if(req.header('X-counterChange')){
+                
+            }
             
             let Products = ''
             if(result_2.rows[0]["Products"]) {
@@ -37,7 +33,7 @@ route.post('/:BuyerID',(req, res)=>{
                 if(i != ProductIDs.length - 1) Products+=','
             }
 
-            let UpdateQuery = `Update "Buyer"."T2_Cart" Set "Products" = '${Products}' where "CartID" = '${CartID}'`
+            let UpdateQuery = `Update "Buyer"."T2_Cart" Set "Products" = '${Products}' where "BuyerID" = '${buyerID}'`
 
             console.log(UpdateQuery)
 
@@ -50,5 +46,4 @@ route.post('/:BuyerID',(req, res)=>{
             })
         })
     })
-})
 module.exports = route

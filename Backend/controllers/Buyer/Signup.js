@@ -1,6 +1,7 @@
 const express = require('express')
 const client = require('../../connection')
 const bodyparser = require('body-parser')
+const pass = require('js-sha512')
 const {v4: uuidv4} = require('uuid')
 
 const route = express.Router()
@@ -10,21 +11,11 @@ route.post('/', (req, res)=>{
     let buyer = req.body
 
     let BuyerID = uuidv4()
-    let CartID = uuidv4()
+    
 
     Keys = Object.keys(buyer)
-    let signupQuery = 'insert into "Buyer"."T1_SignedUp" ("BuyerID" , "CartID" ,'
-    for(i = 0; i < Keys.length; i++){
-        signupQuery+=`"${Keys[i]}"`
-        if(i != Keys.length -1) signupQuery+=', '
-    }
-    signupQuery+=`) values ( '${BuyerID}' , '${CartID}' ,`
-    for(i = 0; i < Keys.length; i++){
-        signupQuery+=`'${buyer[Keys[i]]}'`
-        if(i != Keys.length -1) signupQuery+=', '
-    }
-    signupQuery+=')'
-
+    let signupQuery = `insert into "Buyer"."T1_SignedUp" ("BuyerID" ,"Name","MailID","Phone","Password")
+    values ('${BuyerID}','${buyer.Name}','${buyer.MailID}','${buyer.Phone}','${pass.sha512(buyer.Password)}')`
     console.log(signupQuery)
     client.query(signupQuery, (err, result)=>{
         if(err){
@@ -33,12 +24,12 @@ route.post('/', (req, res)=>{
         }
 
         else{
-            let query = `insert into "Buyer"."T2_Cart" ("CartID") values ('${CartID}')`
+            let query = `insert into "Buyer"."T2_Cart" ("BuyerID") values ('${BuyerID}')`
 
             client.query(query, (e,r)=> {
                 if(e) res.status(505)
                 
-                res.json({BuyerID,buyer,CartID})
+                res.json({BuyerID,buyer})
             })
 
            

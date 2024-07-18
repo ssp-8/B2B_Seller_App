@@ -15,7 +15,7 @@ LoginRoute.get('/', (req,res)=>{
     if(user == null) res.sendStatus(500);
 
     // the authentication query
-    let authenticatequery = `Select * from "Seller"."T1_SignedUp" where "Seller_Name" = '${user.name}' and "Password" = '${sha512(user.password)}'` ;
+    let authenticatequery = `Select * from "Seller"."T1_SignedUp" where "Name" = '${user.Name}' and "Password" = '${sha512(user.Password)}'` ;
 
     client.query(authenticatequery, (err, result)=>{
        
@@ -34,11 +34,7 @@ LoginRoute.get('/', (req,res)=>{
 
         // Otherwise, send not matching code
         else{
-                res.status(401).json(
-                    {
-                        message:"Login not successful"
-                    }
-                );
+                res.status(401);
             }
         }
 
@@ -46,11 +42,9 @@ LoginRoute.get('/', (req,res)=>{
         else{
             console.log(err);
 
-            res.statusCode(505);
+            res.status(505);
         }
     })
-
-    client.end;
 })
 
 module.exports = LoginRoute

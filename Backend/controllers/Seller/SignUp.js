@@ -19,18 +19,18 @@ SignUpRoute.post('/', (req, res)=>{
 
     console.log(user);
     // Encrypting the password
-    let password = sha512(user.password)
+    let password = sha512(user.Password)
 
     // Seller ID is the UUID
 
     if(user == null) res.statusCode(401);
 
     
-    let sellerID = uuidv4()
+    let SellerID = uuidv4()
     
     // The insert query being written here
-    let insertQuery = `insert into "Seller"."T1_SignedUp"("SellerID", "Mail_ID" ,"Phone", "Password","Seller_Name") 
-    values('${sellerID}' ,'${user.mailid}' , '${user.phone}', '${password}','${user.name}')`
+    let insertQuery = `insert into "Seller"."T1_SignedUp"("SellerID", "MailID" ,"Phone", "Password","SellerName") 
+    values('${SellerID}' ,'${user.MailID}' , '${user.Phone}', '${password}','${user.Name}')`
 
     // query written here
     client.query(insertQuery,(error,result)=>{
@@ -41,7 +41,7 @@ SignUpRoute.post('/', (req, res)=>{
         
         // a console log and response code is sent
         console.log("Insertion done");
-        res.status(200).send({sellerID,user});
+        res.status(200).send({SellerID,user});
 
         }
     

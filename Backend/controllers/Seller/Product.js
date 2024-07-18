@@ -51,27 +51,40 @@ ProductRoute.post('/', (req, res)=>{
 
     let ProductID = uuidv4()
 
+    if(!Product.SellerID || !Product.DateOfCreation || !Product.Qty || !Product.Name || !Product.UnitPrice 
+        || !Product.Type || !Product.CategoryID) {
+            res.sendStatus(500)
+        }
+    else {
+        if(!Product.Description) Product.Description = ""
+        if(!Product.OutOfStock) Product.OutOfStock = "No"
+        if(!Product.Active) Product.Active = "Yes"
+        if(!Product.Discount) Product.Discount = "0.0"
+        if(!Product.Material) Product.Material = ""
 
-    let insertQuery = `insert into "Product"."T1_Product_Information" ("ProductID","SellerID","Date_of_Creation","Available_Quantity",
-    "Out_of_Stock","Active","Name","Unit_Price","Type","Material","Discount","Description","CategoryID")
-    values ('${ProductID}','${Product.SellerID}','${Product.Date_of_Creation}','${Product.avl_qty}','${Product.out_of_stock}',
-    '${Product.active}','${Product.name}','${Product.unit_price}','${Product.type}','${Product.material}','${Product.discount}'
-    ,'${Product.description}','${Product.categoryID}')`
+
+    let insertQuery = `insert into "Product"."T1_Product_Information" ("ProductID","SellerID","DateOfCreation","Qty",
+    "OutOfStock","Active","Name","UnitPrice","Type","Material","Discount","Description","CategoryID","Blocked")
+    values ('${ProductID}','${Product.SellerID}','${Product.DateOfCreation}','${Product.Qty}','${Product.OutOfStock}',
+    '${Product.Active}','${Product.Name}','${Product.UnitPrice}','${Product.Type}','${Product.Material}','${Product.Discount}'
+    ,'${Product.Description}','${Product.CategoryID}','false')`
+
 
     
 
     client.query(insertQuery,(err,result)=>{
 
-        console.log(err)
-
-        if(err) { console.log(err);
-            res.sendStatus(403);
-        res.end()
+        if(err) { 
+            console.log(err);
+            res.status(500);
+            res.send(err);
+            
         }
-
-        console.log(result)
-        res.json({ProductID,Product})
+        else {
+            res.json({ProductID,Product})
+        }
     })
+    }
 })
 
 ProductRoute.get('/', (req, res)=>{

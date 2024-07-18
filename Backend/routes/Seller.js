@@ -1,13 +1,17 @@
 const express = require("express")
 
-
 const SellerRoute = express.Router()
 const SignUpRoute = require("../controllers/Seller/SignUp")
 const LoginRoute = require("../controllers/Seller/Login")
-const RegistrationRoute = require('../controllers/Seller/Registration')
+const RegistrationRoute = require('../controllers/Seller/Register')
 const OrdersRoute = require('../controllers/Seller/Orders')
-const JWT = require("../middleware/authentication")
 const ProductRoute = require("../controllers/Seller/Product")
+const TicketRoute = require('../controllers/Seller/GenerateTicket')
+const PasswordResetRoute = require('../controllers/Seller/ForgetPassword')
+const EditProfileRoute = require('../controllers/Seller/EditProfile')
+
+const JWT = require("../middleware/authentication")
+
 const bodyparser = require('body-parser')
 
 
@@ -30,7 +34,9 @@ SellerRoute.use('/signup',SignUpRoute);
 SellerRoute.use('/login',LoginRoute);
 
 // Registration Route
-SellerRoute.use('/registration',RegistrationRoute);
+SellerRoute.use('/register',RegistrationRoute);
+
+SellerRoute.use('/forgotpassword',PasswordResetRoute);
 
 SellerRoute.use(JWT.verifyJWT());
 
@@ -39,5 +45,11 @@ SellerRoute.use('/myorders',OrdersRoute)
 
 //Product Route
 SellerRoute.use('/myproducts',ProductRoute)
+
+//EditProfile
+SellerRoute.use('/edit',EditProfileRoute)
+
+//Generate Ticket
+SellerRoute.use('/ticket',TicketRoute)
 
 module.exports = SellerRoute
